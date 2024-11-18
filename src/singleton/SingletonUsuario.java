@@ -17,7 +17,7 @@ import util.ListaEnlazada;
  * @author Juan Esteban
  */
 public class SingletonUsuario {
-     private static SingletonUsuario INSTANCIA = new SingletonUsuario();
+     private static final SingletonUsuario INSTANCIA = new SingletonUsuario();
     ListaEnlazada<Usuario> usuarios;
 
     private SingletonUsuario() {
@@ -39,7 +39,7 @@ public class SingletonUsuario {
             ObjectInputStream lector = new ObjectInputStream(archivo);
             return (ListaEnlazada<Usuario>) lector.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            usuarios = new ListaEnlazada<Usuario>();
+            usuarios = new ListaEnlazada<>();
             escribirUsuarios();
             return usuarios;
         }
@@ -52,7 +52,6 @@ public class SingletonUsuario {
             ObjectOutputStream escritor = new ObjectOutputStream(archivo);
             escritor.writeObject(usuarios);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -17,7 +17,7 @@ import modelo.Caseta;
  */
 public class SingletonCaseta {
     
-    private static SingletonCaseta INSTANCIA = new SingletonCaseta();
+    private static final SingletonCaseta INSTANCIA = new SingletonCaseta();
     Caseta[][] casetas;
 
     private SingletonCaseta() {
@@ -60,7 +60,6 @@ public class SingletonCaseta {
             ObjectOutputStream escritor = new ObjectOutputStream(archivo);
             escritor.writeObject(casetas);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

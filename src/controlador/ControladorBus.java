@@ -20,11 +20,11 @@ import util.ListaEnlazada;
  */
 public class ControladorBus {
 
-    ControladorPrincipal controladorP;
-    Caseta[][] casetas;
+    private final ControladorEmpresa controladorE;
+    private final Caseta[][] casetas;
 
     public ControladorBus() {
-        controladorP = new ControladorPrincipal();
+        controladorE = new ControladorEmpresa();
         casetas = SingletonCaseta.getInstancia().getCasetas();
     }
 
@@ -44,7 +44,7 @@ public class ControladorBus {
 
     public void guardarBus(Bus bus, Empresa empresa) throws BusRegistradoExcepcion, NoExisteEmpresaParaBusExcepcion, SuperoNumeroPlazasExcepcion {
         Bus buscarBus = buscarBus(bus);
-        Empresa buscarEmpresa = controladorP.buscarEmpresa(empresa.getNit());
+        Empresa buscarEmpresa = controladorE.buscarEmpresa(empresa.getNit());
         if (buscarBus != null) {
             throw new BusRegistradoExcepcion();
         }

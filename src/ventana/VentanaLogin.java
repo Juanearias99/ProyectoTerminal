@@ -4,12 +4,12 @@
  */
 package ventana;
 
-import controlador.ControladorBus;
-import controlador.ControladorPrincipal;
-import controlador.ControladorViaje;
+import controlador.ControladorEmpresa;
+import controlador.ControladorUsuario;
 import javax.swing.JOptionPane;
 import modelo.AdministradorFlota;
 import modelo.AdministradorTerminal;
+import modelo.Empresa;
 import modelo.Usuario;
 
 /**
@@ -18,9 +18,8 @@ import modelo.Usuario;
  */
 public class VentanaLogin extends javax.swing.JFrame {
 
-    private ControladorBus controladorB;
-    private ControladorViaje controladorV;
-    private ControladorPrincipal controladorP;
+    private final ControladorUsuario controladorUsuario;
+    private final ControladorEmpresa controladorEmpresa;
 
     /**
      * Creates new form VentanaLogin
@@ -28,9 +27,8 @@ public class VentanaLogin extends javax.swing.JFrame {
     public VentanaLogin() {
         initComponents();
         setLocationRelativeTo(this);
-        controladorP = new ControladorPrincipal();
-        this.controladorB = controladorB;
-        this.controladorV = controladorV;
+        this.controladorUsuario = new ControladorUsuario();
+        this.controladorEmpresa = new ControladorEmpresa();
     }
 
     /**
@@ -125,15 +123,16 @@ public class VentanaLogin extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String correo = txtCorreo.getText();
         String contrasenia = jPassword.getText();
-        Usuario usuario = controladorP.realizarLogin(correo, contrasenia);
+        Usuario usuario = controladorUsuario.realizarLogin(correo, contrasenia);
 
         if (usuario != null) {
             if (usuario instanceof AdministradorTerminal) {
-                VentanaCaseta ventanaC = new VentanaCaseta(controladorP);
+                VentanaCaseta ventanaC = new VentanaCaseta();
                 ventanaC.setVisible(true);
                 this.dispose();
-            } else if (usuario instanceof AdministradorFlota) {
-                VentanaOpcionesAdminFlota ventanaGAF = new VentanaOpcionesAdminFlota(controladorB, controladorV, controladorP, (AdministradorFlota) usuario);
+            } else if (usuario instanceof AdministradorFlota adminFlota) {
+                Empresa empresa = controladorEmpresa.buscarEmpresa(adminFlota);
+                VentanaOpcionesAdminFlota ventanaGAF = new VentanaOpcionesAdminFlota(empresa, adminFlota);
                 ventanaGAF.setVisible(true);
                 this.dispose();
             } else {

@@ -4,12 +4,11 @@
  */
 package ventana;
 
-import controlador.ControladorPrincipal;
+import controlador.ControladorCaseta;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import modelo.Caseta;
 
 /**
@@ -18,16 +17,13 @@ import modelo.Caseta;
  */
 public class VentanaCaseta extends javax.swing.JFrame implements ActionListener {
 
-    private JButton[][] botones;
-    private ControladorPrincipal controlador;
-
-    /**
-     * Creates new form VentanaPrincipal
-     */
-    public VentanaCaseta(ControladorPrincipal controller) {
+    private final JButton[][] botones;
+    private final ControladorCaseta controlador;
+    
+    public VentanaCaseta() {
         initComponents();
         setLocationRelativeTo(this);
-        this.controlador = controller == null ? new ControladorPrincipal() : controller;
+        this.controlador =  new ControladorCaseta() ;
         botones = new JButton[4][5];
         dibujarBotones();
     }
@@ -176,7 +172,7 @@ public class VentanaCaseta extends javax.swing.JFrame implements ActionListener 
                 if (e.getSource().equals(botones[i][j])) {
                     Caseta caseta = controlador.obtenerCaseta(i, j);
                     if (caseta != null) {
-                        new VentanaGestionEmpresa(controlador, caseta).setVisible(
+                        new VentanaGestionEmpresa(caseta).setVisible(
                                 true);
                         this.dispose();
                     }

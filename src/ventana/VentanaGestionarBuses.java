@@ -5,7 +5,7 @@
 package ventana;
 
 import controlador.ControladorBus;
-import controlador.ControladorPrincipal;
+import controlador.ControladorUsuario;
 import controlador.ControladorViaje;
 import excepciones.BusRegistradoExcepcion;
 import excepciones.NoExisteEmpresaParaBusExcepcion;
@@ -23,20 +23,16 @@ import modelo.Empresa;
  */
 public class VentanaGestionarBuses extends javax.swing.JFrame {
 
-    private ControladorPrincipal controladorP;
-    private ControladorBus controladorB;
-    private ControladorViaje controladorV;
-    private Empresa empresa;
+    private final ControladorBus controladorBus;
+    private final Empresa empresa;
 
     /**
      * Creates new form VentanaGestionarBuses
      */
-    public VentanaGestionarBuses(ControladorPrincipal controladorP, ControladorViaje controladorV, Empresa empresa) {
+    public VentanaGestionarBuses(Empresa empresa) {
         initComponents();
         setLocationRelativeTo(this);
-        this.controladorP = controladorP;
-        this.controladorB = controladorB;
-        this.controladorV = controladorV;
+        this.controladorBus = new ControladorBus();
         this.empresa = empresa;
         llenarTabla();
     }
@@ -228,7 +224,7 @@ public class VentanaGestionarBuses extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        VentanaOpcionesAdminFlota ventanaOAF = new VentanaOpcionesAdminFlota(controladorB, controladorV, controladorP, empresa.getAdminFlota());
+        VentanaOpcionesAdminFlota ventanaOAF = new VentanaOpcionesAdminFlota(empresa, empresa.getAdminFlota());
         ventanaOAF.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
@@ -238,7 +234,7 @@ public class VentanaGestionarBuses extends javax.swing.JFrame {
             String placa = txtPlaca.getText();
             int numPuesto = Integer.parseInt(txtNumPuesto.getText());
             Bus bus = new Bus(placa, numPuesto);
-            controladorB.guardarBus(bus, empresa);
+            controladorBus.guardarBus(bus, empresa);
             JOptionPane.showMessageDialog(null, "Se registro el bus correctamente");
             llenarTabla();
         } catch (BusRegistradoExcepcion | NoExisteEmpresaParaBusExcepcion | SuperoNumeroPlazasExcepcion ex) {

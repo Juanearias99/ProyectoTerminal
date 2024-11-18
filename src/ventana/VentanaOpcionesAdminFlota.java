@@ -5,7 +5,7 @@
 package ventana;
 
 import controlador.ControladorBus;
-import controlador.ControladorPrincipal;
+import controlador.ControladorUsuario;
 import controlador.ControladorViaje;
 import modelo.AdministradorFlota;
 import modelo.Empresa;
@@ -16,21 +16,12 @@ import modelo.Empresa;
  */
 public class VentanaOpcionesAdminFlota extends javax.swing.JFrame {
 
-    private ControladorBus controladorB;
-    private ControladorViaje controladorV;
-    private ControladorPrincipal controladorP;
-    private AdministradorFlota administradorFlota;
-    private Empresa empresa;
+    private final AdministradorFlota administradorFlota;
+    private final Empresa empresa;
 
-    /**
-     * Creates new form VentanaOpcionesAdminFlota
-     */
-    public VentanaOpcionesAdminFlota(ControladorBus controlador, ControladorViaje controladorV, ControladorPrincipal controladorP, AdministradorFlota administradorFlota) {
+    public VentanaOpcionesAdminFlota(Empresa empresa, AdministradorFlota administradorFlota) {
         initComponents();
         setLocationRelativeTo(this);
-        this.controladorB = controladorB;
-        this.controladorV = controladorV;
-        this.controladorP = controladorP;
         this.administradorFlota = administradorFlota;
         this.empresa = empresa;
     }
@@ -150,13 +141,13 @@ public class VentanaOpcionesAdminFlota extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnGestionarBusesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarBusesActionPerformed
-        VentanaGestionarBuses ventanaGB = new VentanaGestionarBuses(controladorP, controladorV, empresa);
+        VentanaGestionarBuses ventanaGB = new VentanaGestionarBuses(empresa);
         ventanaGB.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnGestionarBusesActionPerformed
 
     private void btnGestionarViajesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarViajesActionPerformed
-        VentanaGestionarViajes ventanaGV = new VentanaGestionarViajes(controladorV, controladorP, controladorB, administradorFlota);
+        VentanaGestionarViajes ventanaGV = new VentanaGestionarViajes(administradorFlota);
         ventanaGV.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnGestionarViajesActionPerformed

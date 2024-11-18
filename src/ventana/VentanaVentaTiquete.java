@@ -4,7 +4,7 @@
  */
 package ventana;
 
-import controlador.ControladorPrincipal;
+import controlador.ControladorUsuario;
 import modelo.Cliente;
 
 /**
@@ -13,16 +13,16 @@ import modelo.Cliente;
  */
 public class VentanaVentaTiquete extends javax.swing.JFrame {
 
-    private ControladorPrincipal controlador;
+    private final ControladorUsuario controlador;
     private Cliente cliente;
 
     /**
      * Creates new form VentanaGestionarTiquete
      */
-    public VentanaVentaTiquete(ControladorPrincipal controlador) {
+    public VentanaVentaTiquete(Cliente cliente) {
         initComponents();
         setLocationRelativeTo(this);
-        this.controlador = controlador;
+        this.controlador = new ControladorUsuario();
         this.cliente = cliente;
     }
 

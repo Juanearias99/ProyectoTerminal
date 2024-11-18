@@ -4,7 +4,8 @@
  */
 package ventana;
 
-import controlador.ControladorPrincipal;
+import controlador.ControladorEmpresa;
+import controlador.ControladorUsuario;
 import excepciones.CorreoRegistradoExcepcion;
 import excepciones.UsuarioRegistradoExcepcion;
 import javax.swing.JOptionPane;
@@ -12,24 +13,22 @@ import modelo.AdministradorFlota;
 import modelo.Caseta;
 import modelo.Empresa;
 
-
 /**
  *
  * @author Juan Esteban
  */
 public class VentanaGestionEmpresa extends javax.swing.JFrame {
 
-    private ControladorPrincipal controlador;
-    private Caseta caseta;
+    private final Caseta caseta;
+    private final ControladorEmpresa controladorEmpresa;
+    private final ControladorUsuario controladorUsuario;
 
-    /**
-     * Creates new form VentanaGestionCaseta
-     */
-    public VentanaGestionEmpresa(ControladorPrincipal controlador, Caseta caseta) {
+    public VentanaGestionEmpresa(Caseta caseta) {
         initComponents();
         setLocationRelativeTo(this);
-        this.controlador = controlador;
         this.caseta = caseta;
+        this.controladorEmpresa = new ControladorEmpresa();
+        this.controladorUsuario = new ControladorUsuario();
         deshabilitarBotonGuardar();
         deshabilitarBotonGuardarEmpresa();
     }
@@ -408,7 +407,7 @@ public class VentanaGestionEmpresa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        VentanaCaseta ventanaC = new VentanaCaseta(controlador);
+        VentanaCaseta ventanaC = new VentanaCaseta();
         ventanaC.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
@@ -430,7 +429,7 @@ public class VentanaGestionEmpresa extends javax.swing.JFrame {
         String nit = txtNit.getText();
         double valorArrendamiento = Double.parseDouble(txtValorArrendamiento.getText());
         int numPlaza = Integer.parseInt(txtCantidad.getText());
-        Empresa empresa = controlador.buscarEmpresa(nit);
+        Empresa empresa = controladorEmpresa.buscarEmpresa(nit);
         if (empresa == null) {
             caseta.getEmpresa().setNombre(nombreEmpresa);
             caseta.getEmpresa().setNit(nit);
@@ -438,7 +437,7 @@ public class VentanaGestionEmpresa extends javax.swing.JFrame {
             caseta.getEmpresa().setCantidadPlazaEstacionamiento(numPlaza);
             JOptionPane.showMessageDialog(null, "Se registro la empresa correctamente");
             deshabilitarBotonGuardarEmpresa();
-            controlador.persistirDatos();
+            controladorEmpresa.persistirDatos();
         } else {
             JOptionPane.showMessageDialog(null, "Ya existe una empresa con este nit");
         }
@@ -455,11 +454,11 @@ public class VentanaGestionEmpresa extends javax.swing.JFrame {
         if (contrasenia.equals(confirmarContrasenia)) {
             try {
                 AdministradorFlota administradorFlota = new AdministradorFlota(genero, telefono, cedula, nombre, correo, contrasenia);
-                controlador.guardarUsuario(administradorFlota);
+                controladorUsuario.guardarUsuario(administradorFlota);
                 caseta.getEmpresa().setAdminFlota(administradorFlota);
                 JOptionPane.showMessageDialog(null, "Se registro el administrador de la flota correctamente");
                 deshabilitarBotonGuardar();
-                controlador.persistirDatos();
+                controladorUsuario.persistirDatos();
             } catch (CorreoRegistradoExcepcion | UsuarioRegistradoExcepcion ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }

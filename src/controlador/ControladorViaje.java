@@ -13,7 +13,6 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import modelo.AdministradorFlota;
-import modelo.Caseta;
 import modelo.Empresa;
 import modelo.Viaje;
 import singleton.SingletonCaseta;
@@ -26,12 +25,10 @@ import singleton.SingletonUsuario;
  */
 public class ControladorViaje {
  
-    private ControladorPrincipal controladorP;
-    private Caseta[][]casetas;
+    private final ControladorEmpresa controladorE;
     
     public ControladorViaje(){
-        controladorP = new ControladorPrincipal();
-        casetas = SingletonCaseta.getInstancia().getCasetas();
+        controladorE = new ControladorEmpresa();
     }
     
      public LocalDateTime calcularFechaHora(Date fecha, String hora) {
@@ -46,7 +43,7 @@ public class ControladorViaje {
 
     public void guardarViaje(Viaje viaje, AdministradorFlota administradorFlota) throws
             VehiculoNoHabilitadoExcepcion, ViajeCruzadoExcepcion {
-        Empresa empresa = controladorP.buscarEmpresa(administradorFlota);
+        Empresa empresa = controladorE.buscarEmpresa(administradorFlota);
         boolean encontroBus = false;
         boolean puedeProgramarViaje = false;
         for (int i = 0; i < empresa.getListaViajes().size(); i++) {

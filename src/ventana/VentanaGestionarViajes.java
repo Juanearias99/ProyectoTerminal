@@ -5,14 +5,13 @@
 package ventana;
 
 import controlador.ControladorBus;
-import controlador.ControladorPrincipal;
+import controlador.ControladorEmpresa;
+import controlador.ControladorUsuario;
 import controlador.ControladorViaje;
 import excepciones.VehiculoNoHabilitadoExcepcion;
 import excepciones.ViajeCruzadoExcepcion;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.AdministradorFlota;
@@ -26,23 +25,18 @@ import modelo.Viaje;
  */
 public class VentanaGestionarViajes extends javax.swing.JFrame {
 
-    private ControladorViaje controladorV;
-    private ControladorPrincipal controladorP;
-    private ControladorBus controladorB;
-    private AdministradorFlota administradorFlota;
+    private final ControladorViaje controladorViaje;
+    private final ControladorEmpresa controladorEmpresa;
+    private final AdministradorFlota administradorFlota;
     private Empresa empresa;
 
-    /**
-     * Creates new form VentanaGestionarViajes
-     */
-    public VentanaGestionarViajes(ControladorViaje controladorV, ControladorPrincipal controladorP, ControladorBus controladorB, AdministradorFlota administradorFlota) {
+    public VentanaGestionarViajes(AdministradorFlota administradorFlota) {
         initComponents();
         setLocationRelativeTo(this);
-        this.controladorV = controladorV;
-        this.controladorP = controladorP;
-        this.controladorB = controladorB;
+        this.controladorEmpresa = new ControladorEmpresa();
+        this.controladorViaje = new ControladorViaje();
         this.administradorFlota = administradorFlota;
-        this.empresa = controladorP.buscarEmpresa(administradorFlota);
+        this.empresa = controladorEmpresa.buscarEmpresa(administradorFlota);
         cargarBuses();
         cargarHoras();
         llenarTabla();
@@ -74,7 +68,7 @@ public class VentanaGestionarViajes extends javax.swing.JFrame {
     }
 
     private void cargarBuses() {
-        empresa = controladorP.buscarEmpresa(administradorFlota);
+        empresa = controladorEmpresa.buscarEmpresa(administradorFlota);
         jComboBoxBus.removeAllItems();
         for (int i = 0; i < empresa.getListaBuses().size(); i++) {
             jComboBoxBus.addItem(empresa.getListaBuses().get(i));
@@ -411,7 +405,7 @@ public class VentanaGestionarViajes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresar2ActionPerformed
-        VentanaOpcionesAdminFlota ventanaOAF = new VentanaOpcionesAdminFlota(controladorB, controladorV, controladorP, administradorFlota);
+        VentanaOpcionesAdminFlota ventanaOAF = new VentanaOpcionesAdminFlota(empresa, administradorFlota);
         ventanaOAF.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresar2ActionPerformed
@@ -425,15 +419,15 @@ public class VentanaGestionarViajes extends javax.swing.JFrame {
         String horaLlegada = (String) jComboBoxHoraLlegada.getSelectedItem();
         Bus bus = (Bus) jComboBoxBus.getSelectedItem();
         double valorUnitario = Double.parseDouble(txtValorUnitario.getText());
-        LocalDateTime calcularFechaHoraSalida = controladorV.calcularFechaHora(fechadaSalida, horaSalida);
-        LocalDateTime calcularFechaHoraLlegada = controladorV.calcularFechaHora(fechaLlegada, horaLlegada);
+        LocalDateTime calcularFechaHoraSalida = controladorViaje.calcularFechaHora(fechadaSalida, horaSalida);
+        LocalDateTime calcularFechaHoraLlegada = controladorViaje.calcularFechaHora(fechaLlegada, horaLlegada);
         if (calcularFechaHoraSalida.isAfter(calcularFechaHoraLlegada)) {
             JOptionPane.showMessageDialog(null, "La hora de salida es mayor a la hora de llegada");
         } else {
-            Date fechaCreacionViaje = controladorV.obtenerFechaCreacionViaje();
+            Date fechaCreacionViaje = controladorViaje.obtenerFechaCreacionViaje();
             Viaje viaje = new Viaje(origen, destino, calcularFechaHoraSalida, calcularFechaHoraLlegada, bus, valorUnitario, fechaCreacionViaje);
             try {
-                controladorV.guardarViaje(viaje, administradorFlota);
+                controladorViaje.guardarViaje(viaje, administradorFlota);
                 JOptionPane.showMessageDialog(null, "El viaje ha sido registrado");
                 llenarTabla();
             } catch (VehiculoNoHabilitadoExcepcion | ViajeCruzadoExcepcion ex) {

@@ -19,13 +19,13 @@ import util.ListaEnlazada;
  *
  * @author Juan Esteban
  */
-public class ControladorPrincipal {
+public class ControladorUsuario {
 
     private final Caseta[][] casetas;
     private static AdministradorTerminal admin;
     private final ListaEnlazada<Usuario> listaUsuarios;
 
-    public ControladorPrincipal() {
+    public ControladorUsuario() {
         casetas = SingletonCaseta.getInstancia().getCasetas();
         listaUsuarios = SingletonUsuario.getInstancia().getUsuarios();
         admin = new AdministradorTerminal("1234", 18, "Carrera20", "Juan99", "juan99", "123");
@@ -43,38 +43,7 @@ public class ControladorPrincipal {
         return admin;
     }
 
-    public Caseta[][] getCasetas() {
-        return casetas;
-    }
-
-    public Caseta obtenerCaseta(int fila, int columna) {
-        return casetas[fila][columna];
-    }
-
-    public Empresa buscarEmpresa(String nit) {
-        for (int i = 0; i < casetas.length; i++) {
-            for (int j = 0; j < casetas[i].length; j++) {
-                Empresa empresa = casetas[i][j].getEmpresa();
-                if (empresa.getNit() != null && empresa.getNit().equals(nit)) {
-                    return empresa;
-                }
-            }
-        }
-        return null;
-    }
-
-    public Empresa buscarEmpresa(AdministradorFlota administradorFlota) {
-        for (int i = 0; i < casetas.length; i++) {
-            for (int j = 0; j < casetas[i].length; j++) {
-                Empresa empresa = casetas[i][j].getEmpresa();
-                if (empresa.getAdminFlota() != null
-                        && empresa.getAdminFlota().getCedula().equals(administradorFlota.getCedula())) {
-                    return empresa;
-                }
-            }
-        }
-        return null;
-    }  
+    
 
     public AdministradorFlota buscarAdminFlota(String correo) {
         for (int i = 0; i < casetas.length; i++) {
@@ -126,12 +95,9 @@ public class ControladorPrincipal {
         persistirDatos();
     }
 
-    
-
     public void persistirDatos() {
         SingletonUsuario.getInstancia().escribirUsuarios();
         SingletonCaseta.getInstancia().escribirCasetas();
     }
 
-   
 }
