@@ -5,13 +5,9 @@
 package ventana;
 
 import controlador.ControladorBus;
-import controlador.ControladorUsuario;
-import controlador.ControladorViaje;
 import excepciones.BusRegistradoExcepcion;
 import excepciones.NoExisteEmpresaParaBusExcepcion;
 import excepciones.SuperoNumeroPlazasExcepcion;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Bus;
